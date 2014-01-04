@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LolBackup", "LolBackup\LolBackup.csproj", "{5AF4EBC9-B1C9-4390-AED3-79616A169A59}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D3EE2DC-203A-4342-9D3C-C7C4E790ED45}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		LolBackup.vsmdi = LolBackup.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LolBackupTests", "LolBackupTests\LolBackupTests.csproj", "{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Beta|Any CPU = Beta|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		IIS_Dev|Any CPU = IIS_Dev|Any CPU
+		Release|Any CPU = Release|Any CPU
+		TEesting|Any CPU = TEesting|Any CPU
+		Testing|Any CPU = Testing|Any CPU
+		UnitTests|Any CPU = UnitTests|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.Beta|Any CPU.Build.0 = Release|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.IIS_Dev|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.IIS_Dev|Any CPU.Build.0 = Release|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.TEesting|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.TEesting|Any CPU.Build.0 = Release|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.Testing|Any CPU.Build.0 = Release|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.UnitTests|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF4EBC9-B1C9-4390-AED3-79616A169A59}.UnitTests|Any CPU.Build.0 = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.Beta|Any CPU.Build.0 = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.IIS_Dev|Any CPU.ActiveCfg = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.IIS_Dev|Any CPU.Build.0 = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.TEesting|Any CPU.ActiveCfg = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.TEesting|Any CPU.Build.0 = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.Testing|Any CPU.ActiveCfg = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.Testing|Any CPU.Build.0 = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.UnitTests|Any CPU.ActiveCfg = Release|Any CPU
+		{17D9BBC2-5F59-45D6-9C34-E4CEAA4ACFD1}.UnitTests|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = LolBackup.vsmdi
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,1 @@
+To set up your lolbackup, check for further instructions in processes.cfg, which can can be opened with any text editor.
