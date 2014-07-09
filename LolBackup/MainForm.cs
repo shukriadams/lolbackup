@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using System.Xml; 
 using System.Threading;
 using System.IO;
+using vcFramework.Assemblies;
+using vcFramework.Xml;
 
 namespace LolBackup
 {

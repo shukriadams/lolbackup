@@ -2,6 +2,7 @@
 using System.IO;
 using LolBackup;
 using NUnit.Framework;
+using vcFramework.IO;
 
 namespace LolBackupTests
 {
@@ -11,7 +12,7 @@ namespace LolBackupTests
     [TestFixture]
     public class BackupProcessTests
     {
-        private static string _workfolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LolBackupTestsTempFolder");
+        private static string _workfolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestTempFolder");
 
         [TestFixtureSetUp]
         public static void MyClassInitialize() 

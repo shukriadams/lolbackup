@@ -1,6 +1,14 @@
-﻿using System;
+﻿//////////////////////////////////////////////////////////////////////////////////////
+// Author				: Shukri Adams												//
+// Contact				: shukri.adams@gmail.com									//
+//																					//
+// vcFramework : A reuseable library of utility classes                             //
+// Copyright (C)																	//
+//////////////////////////////////////////////////////////////////////////////////////
 
-namespace LolBackup
+using System;
+
+namespace vcFramework.IO
 {
     public class MappingException : Exception
     {
@@ -8,7 +16,7 @@ namespace LolBackup
 
         public string File
         {
-            get
+            get 
             {
                 return _file;
             }

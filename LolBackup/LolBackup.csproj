@@ -60,6 +60,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -67,11 +68,16 @@
     <Compile Include="Core\BackupProcess.cs" />
     <Compile Include="Core\BackupSteerer.cs" />
     <Compile Include="Lib\AssemblyAccessor.cs" />
+    <Compile Include="Lib\AssemblyLib.cs" />
+    <Compile Include="Lib\ByteArrayLib.cs" />
     <Compile Include="Lib\FileSystemLib.cs" />
     <Compile Include="Lib\MappingException.cs" />
+    <Compile Include="Lib\ParserLib.cs" />
+    <Compile Include="Lib\RandomLib.cs" />
     <Compile Include="Lib\SerializeLib.cs" />
     <Compile Include="Lib\StateHolder.cs" />
     <Compile Include="Lib\StreamsLib.cs" />
+    <Compile Include="Lib\StringTypeTestLib.cs" />
     <Compile Include="Lib\WriteMessageDelegate.cs" />
     <Compile Include="ListViewFast.cs">
       <SubType>Component</SubType>
