@@ -77,8 +77,7 @@ namespace LolBackup
                 foreach (XmlNode f in folders)
                 {
                     string s = f.InnerText.ToLower();
-                    if (Directory.Exists(s))
-                       blockedfolders.Add(s);
+                    blockedfolders.Add(s);
                 }
 
                 BackupProcess p = new BackupProcess(

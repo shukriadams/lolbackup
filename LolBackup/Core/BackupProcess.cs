@@ -11,7 +11,7 @@ namespace LolBackup
     public class BackupProcess
     {
         #region FIELDS
-
+         
         bool _busy;
 
         readonly string _sourceDirectory;

@@ -143,7 +143,7 @@ namespace LolBackup
         {
             if (!File.Exists(_processesFilePath))
             {
-                this.WriteToConsole("LolBackup couldn't find a processes.cfg file, so it created one for you. Be sure to update this with your own backup processes.");
+                this.WriteToConsole("Couldn't find a processes.cfg file, so it created one for you. Be sure to update this with your own backup processes.");
                 AssemblyAccessor assemblyAccessor = new AssemblyAccessor(this.GetType());
                 string fileContent = assemblyAccessor.GetStringDocument(this.GetType().Namespace + ".Processes.cfg");
                 File.WriteAllText(Path.Combine(Application.StartupPath, "Processes.cfg"), fileContent);
