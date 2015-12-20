@@ -34,6 +34,16 @@ namespace LolBackup
         private string _messageToAdd = string.Empty;
 
         /// <summary>
+        /// Temporary store for crossthread progressbar update
+        /// </summary>
+        private int _progress;
+
+        /// <summary>
+        /// Temporary store for crossthread progressbar update
+        /// </summary>
+        private int _progressTotal;
+
+        /// <summary>
         /// Holds contents of backup processes xml file.
         /// </summary>
         XmlDocument _jobs;
@@ -89,7 +99,7 @@ namespace LolBackup
         {
             if (_steerer == null)
             {
-                _steerer = new BackupSteerer(_jobs, WriteToConsole);
+                _steerer = new BackupSteerer(_jobs, StatusUpdate, ProgressBarUpdate, WriteToConsole);
                 btnStart.Enabled = false;
                 btnStop.Enabled = true;
 
@@ -151,6 +161,7 @@ namespace LolBackup
 
             _jobs = new XmlDocument();
             _jobs.Load(_processesFilePath);
+            scanStatus.Text = string.Empty;
 
             if (_stateholder.Contains("autoStartProcessing"))
                 cbProcessOnStartup.Checked = (bool)_stateholder.Retrieve("autoStartProcessing");
@@ -292,8 +303,8 @@ namespace LolBackup
         }
 
         /// <summary>
-        /// Writes a message to the console. This method is thread-friendly; it can be passed via a delegate to a background thread
-        /// where it can be called directly.
+        /// Writes a message to the console. This method is crossthread-friendly; it can be passed via a delegate 
+        /// to a background thread where it can be called directly.
         /// </summary>
         /// <param name="message"></param>
         public void WriteToConsole(string message)
@@ -301,7 +312,39 @@ namespace LolBackup
             _messageToAdd = message;
             console.Invoke(new UiInvoke(WriteToConsoleThreadSafe));
         }
-        
+
+        /// <summary>
+        /// Writes a message to the console. This method is crossthread-friendly; it can be passed via a delegate 
+        /// to a background thread where it can be called directly.
+        /// </summary>
+        /// <param name="message"></param>
+        public void StatusUpdate(string message)
+        {
+            _messageToAdd = message;
+            scanStatus.Invoke(new UiInvoke(StatusUpdateThreadSafe));
+        }
+
+        /// <summary>
+        /// Updates progress bar. This methos is crossthread-friendly.
+        /// </summary>
+        /// <param name="progress"></param>
+        /// <param name="progressTotal"></param>
+        public void ProgressBarUpdate(int progress, int progressTotal)
+        {
+            _progress = progress;
+            _progressTotal = progressTotal;
+            backupProgressBar.Invoke(new UiInvoke(ProgressBarUpdateThreadSafe));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void StatusUpdateThreadSafe()
+        {
+            scanStatus.Text = _messageToAdd;
+            backupProgressBar.Value = 0; // when status message is written, bar should be empty
+        }
+
         /// <summary>
         /// To be invoked by WriteToConsole in main app thread.
         /// </summary>
@@ -311,6 +354,20 @@ namespace LolBackup
             console.Items.Insert(0, row);
             if (console.Items.Count > 100)
                 console.Items.RemoveAt(console.Items.Count - 1);
+        }
+
+        /// <summary>
+        /// To be invoked by 
+        /// </summary>
+        private void ProgressBarUpdateThreadSafe()
+        {
+            // prevent overflow
+            if (_progress > _progressTotal)
+                _progress = _progressTotal;
+
+            backupProgressBar.Value = _progress;
+            backupProgressBar.Maximum = _progressTotal;
+            scanStatus.Text = "Processing ..."; // when bar updates, status label must be blank
         }
 
         /// <summary>

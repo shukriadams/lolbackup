@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
-using System.IO;
 
 namespace LolBackup
 {
@@ -14,23 +13,7 @@ namespace LolBackup
 
         readonly List<BackupProcess> _jobs = new List<BackupProcess>();
 
-        WriteMessageDelegate _writeMessageDelegate;
-
-        #endregion
-
-        #region PROPERTIES
-
-        public WriteMessageDelegate WriteMessageDelegate
-        {
-            get 
-            {
-                return _writeMessageDelegate;
-            }
-            set 
-            {
-                _writeMessageDelegate = value;
-            }
-        }
+        private WriteMessageDelegate _writeMessageDelegate;
 
         #endregion
 
@@ -43,10 +26,13 @@ namespace LolBackup
         /// <param name="writeMessageDelegate">Leave null if not required.</param>
         public BackupSteerer(
             XmlDocument jobList,
+             WriteMessageDelegate statuUpdateDelegate,
+            ProgressBarUpdateDelegate progressBarUpdateDelegate,
             WriteMessageDelegate writeMessageDelegate
             ) 
         {
             _writeMessageDelegate = writeMessageDelegate;
+
             XmlNodeList jobs = jobList.DocumentElement.SelectNodes("process");
             foreach (XmlNode job in jobs)
             {
@@ -86,6 +72,8 @@ namespace LolBackup
                     allowedFileExtensions,
                     blockedFileExtensions,
                     blockedfolders,
+                    statuUpdateDelegate,
+                    progressBarUpdateDelegate,
                     writeMessageDelegate);
 
                 if (job.Attributes["versionFiles"] != null)
@@ -101,6 +89,9 @@ namespace LolBackup
 
         #region METHODS
 
+        /// <summary>
+        /// Starts all backup processes. 
+        /// </summary>
         public void Process(
             )
         {
@@ -108,6 +99,7 @@ namespace LolBackup
             foreach (BackupProcess p in _jobs)
                 count += p.Process();
             
+            // after all processes are done, report how many files were backed up
             if (_writeMessageDelegate != null)
                 _writeMessageDelegate.Invoke("Files backed up : " + count);
 

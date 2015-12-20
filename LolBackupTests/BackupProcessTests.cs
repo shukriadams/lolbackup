@@ -65,7 +65,7 @@ namespace LolBackupTests
             Directory.CreateDirectory(targetDir);
 
             // do
-            BackupProcess backup = new BackupProcess(sourceDir, targetDir, null, null, null, null);
+            BackupProcess backup = new BackupProcess(sourceDir, targetDir, null, null, null, null, null, null);
             backup.Process();
 
             // test
@@ -85,7 +85,7 @@ namespace LolBackupTests
             string targetDir = Path.GetDirectoryName(CreateTargetFile("test2.txt", "test123"));
 
             // do
-            BackupProcess backup = new BackupProcess(sourceDir, targetDir, null, null, null, null);
+            BackupProcess backup = new BackupProcess(sourceDir, targetDir, null, null, null, null, null, null);
             backup.DeleteOrphans = true;
             backup.Process();
 
@@ -105,7 +105,7 @@ namespace LolBackupTests
             string targetDir = Path.GetDirectoryName(CreateTargetFile("test2.txt", "test123"));
 
             // do
-            BackupProcess backup = new BackupProcess(sourceDir, targetDir, null, null, null, null);
+            BackupProcess backup = new BackupProcess(sourceDir, targetDir, null, null, null, null, null, null);
             backup.Process();
 
             // test
@@ -125,7 +125,7 @@ namespace LolBackupTests
             Directory.CreateDirectory(orphanDirectory);
 
             // do
-            BackupProcess backup = new BackupProcess(sourceDir, targetDir, null, null, null, null);
+            BackupProcess backup = new BackupProcess(sourceDir, targetDir, null, null, null, null, null, null);
             backup.DeleteOrphans = true;
             backup.Process();
 
@@ -154,7 +154,7 @@ namespace LolBackupTests
             Assert.IsTrue( FileSystemLib.ContainsFiles(targetDir));
 
             // do
-            BackupProcess backup = new BackupProcess(sourceDir, targetDir, null, null, null, null);
+            BackupProcess backup = new BackupProcess(sourceDir, targetDir, null, null, null, null, null, null);
             backup.DeleteOrphans = true;
             backup.Process();
 

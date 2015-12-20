@@ -64,8 +64,10 @@ namespace LolBackup
             this.btnBackupNow = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.lblLastBackupTime = new System.Windows.Forms.Label();
-            this.console = new ListViewFast();
+            this.console = new LolBackup.ListViewFast();
             this.column1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.backupProgressBar = new System.Windows.Forms.ProgressBar();
+            this.scanStatus = new System.Windows.Forms.Label();
             this.systemTrayContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backupInterval)).BeginInit();
             this.SuspendLayout();
@@ -104,20 +106,20 @@ namespace LolBackup
             this.restoreToolStripMenuItem,
             this.shutdownToolStripMenuItem});
             this.systemTrayContextMenu.Name = "contextMenuStrip1";
-            this.systemTrayContextMenu.Size = new System.Drawing.Size(153, 70);
+            this.systemTrayContextMenu.Size = new System.Drawing.Size(129, 48);
             this.systemTrayContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.systemTrayContextMenuOpening);
             // 
             // restoreToolStripMenuItem
             // 
             this.restoreToolStripMenuItem.Name = "restoreToolStripMenuItem";
-            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.restoreToolStripMenuItem.Text = "Restore";
             this.restoreToolStripMenuItem.Click += new System.EventHandler(this.restoreToolStripMenuItem_Click);
             // 
             // shutdownToolStripMenuItem
             // 
             this.shutdownToolStripMenuItem.Name = "shutdownToolStripMenuItem";
-            this.shutdownToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.shutdownToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.shutdownToolStripMenuItem.Text = "Shutdown";
             this.shutdownToolStripMenuItem.Click += new System.EventHandler(this.shutdownToolStripMenuItem_Click);
             // 
@@ -214,7 +216,7 @@ namespace LolBackup
             this.console.Location = new System.Drawing.Point(150, 12);
             this.console.Name = "console";
             this.console.Scrollable = false;
-            this.console.Size = new System.Drawing.Size(455, 390);
+            this.console.Size = new System.Drawing.Size(566, 331);
             this.console.TabIndex = 14;
             this.console.UseCompatibleStateImageBehavior = false;
             this.console.View = System.Windows.Forms.View.Details;
@@ -223,11 +225,32 @@ namespace LolBackup
             // 
             this.column1.Text = "";
             // 
+            // backupProgressBar
+            // 
+            this.backupProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.backupProgressBar.Location = new System.Drawing.Point(150, 349);
+            this.backupProgressBar.Name = "backupProgressBar";
+            this.backupProgressBar.Size = new System.Drawing.Size(566, 10);
+            this.backupProgressBar.TabIndex = 15;
+            // 
+            // scanStatus
+            // 
+            this.scanStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.scanStatus.Location = new System.Drawing.Point(150, 362);
+            this.scanStatus.Name = "scanStatus";
+            this.scanStatus.Size = new System.Drawing.Size(566, 24);
+            this.scanStatus.TabIndex = 16;
+            this.scanStatus.Text = "...";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(617, 414);
+            this.ClientSize = new System.Drawing.Size(728, 395);
+            this.Controls.Add(this.scanStatus);
+            this.Controls.Add(this.backupProgressBar);
             this.Controls.Add(this.console);
             this.Controls.Add(this.cbProcessOnStartup);
             this.Controls.Add(this.btnStart);
@@ -267,6 +290,8 @@ namespace LolBackup
         private System.Windows.Forms.Label lblLastBackupTime;
         private ListViewFast console;
         private System.Windows.Forms.ColumnHeader column1;
+        private System.Windows.Forms.ProgressBar backupProgressBar;
+        private System.Windows.Forms.Label scanStatus;
     }
 }
 

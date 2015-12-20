@@ -67,12 +67,14 @@
   <ItemGroup>
     <Compile Include="Core\BackupProcess.cs" />
     <Compile Include="Core\BackupSteerer.cs" />
+    <Compile Include="Core\NestedContentFinder.cs" />
     <Compile Include="Lib\AssemblyAccessor.cs" />
     <Compile Include="Lib\AssemblyLib.cs" />
     <Compile Include="Lib\ByteArrayLib.cs" />
     <Compile Include="Lib\FileSystemLib.cs" />
     <Compile Include="Lib\MappingException.cs" />
     <Compile Include="Lib\ParserLib.cs" />
+    <Compile Include="Lib\ProgressBarUpdateDelegate.cs" />
     <Compile Include="Lib\RandomLib.cs" />
     <Compile Include="Lib\SerializeLib.cs" />
     <Compile Include="Lib\StateHolder.cs" />
