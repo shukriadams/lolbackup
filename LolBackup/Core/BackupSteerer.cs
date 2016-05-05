@@ -15,6 +15,7 @@ namespace LolBackup
 
         private WriteMessageDelegate _writeMessageDelegate;
 
+        private UiInvoke _uiResetDelegate;
         #endregion
 
         #region CTORS
@@ -26,12 +27,14 @@ namespace LolBackup
         /// <param name="writeMessageDelegate">Leave null if not required.</param>
         public BackupSteerer(
             XmlDocument jobList,
-             WriteMessageDelegate statuUpdateDelegate,
+            WriteMessageDelegate statuUpdateDelegate,
             ProgressBarUpdateDelegate progressBarUpdateDelegate,
-            WriteMessageDelegate writeMessageDelegate
-            ) 
+            WriteMessageDelegate writeMessageDelegate,
+            UiInvoke uiResetDelegate
+            )
         {
             _writeMessageDelegate = writeMessageDelegate;
+            _uiResetDelegate = uiResetDelegate;
 
             XmlNodeList jobs = jobList.DocumentElement.SelectNodes("process");
             foreach (XmlNode job in jobs)
@@ -92,8 +95,7 @@ namespace LolBackup
         /// <summary>
         /// Starts all backup processes. 
         /// </summary>
-        public void Process(
-            )
+        public void Process()
         {
             int count = 0;
             foreach (BackupProcess p in _jobs)
@@ -103,6 +105,8 @@ namespace LolBackup
             if (_writeMessageDelegate != null)
                 _writeMessageDelegate.Invoke("Files backed up : " + count);
 
+            // finally, trigger cleanup in parent
+            _uiResetDelegate.Invoke();
         }
 
         #endregion

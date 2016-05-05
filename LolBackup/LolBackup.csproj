@@ -74,7 +74,7 @@
     <Compile Include="Lib\FileSystemLib.cs" />
     <Compile Include="Lib\MappingException.cs" />
     <Compile Include="Lib\ParserLib.cs" />
-    <Compile Include="Lib\ProgressBarUpdateDelegate.cs" />
+    <Compile Include="Core\ProgressBarUpdateDelegate.cs" />
     <Compile Include="Lib\RandomLib.cs" />
     <Compile Include="Lib\SerializeLib.cs" />
     <Compile Include="Lib\StateHolder.cs" />

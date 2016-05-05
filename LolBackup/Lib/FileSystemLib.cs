@@ -12,6 +12,7 @@ using System.Linq;
 using vcFramework.Parsers;
 using vcFramework.RandomItems;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace vcFramework.IO
 {
@@ -574,30 +575,29 @@ namespace vcFramework.IO
             string targetRoot
             )
         {
-            srcRoot = srcRoot.ToLower();
-            targetRoot = targetRoot.ToLower();
+            // needs to remove any trailing "\" from paths
+            if (srcRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                srcRoot = srcRoot.Substring(0,
+                    srcRoot.Length - Path.DirectorySeparatorChar.ToString().Length);
+
+            if (targetRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                targetRoot = targetRoot.Substring(0,
+                    targetRoot.Length - Path.DirectorySeparatorChar.ToString().Length);
+
+            // user lower case comparers to avoid false negatives
+            string srcRootComparer = srcRoot.ToLower();
 
             string[] targetPaths = new string[sourceFiles.Length];
 
             for (int i = 0; i < sourceFiles.Length; i++)
             {
-                sourceFiles[i] = sourceFiles[i].ToLower();
+                string sourceFileComparer = sourceFiles[i].ToLower();
 
                 // ensure that the source root on the current path is valid
-                if (!sourceFiles[i].StartsWith(srcRoot))
+                if (!sourceFileComparer.StartsWith(srcRootComparer))
                     throw new MappingException(sourceFiles[i]);
 
-                // needs to remove any trailing "\" from paths
-                if (srcRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                    srcRoot = srcRoot.Substring(0,
-                        srcRoot.Length - Path.DirectorySeparatorChar.ToString().Length);
-                if (targetRoot.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                    targetRoot = targetRoot.Substring(0,
-                        targetRoot.Length - Path.DirectorySeparatorChar.ToString().Length);
-
-                targetPaths[i] = sourceFiles[i].Replace(
-                    srcRoot,
-                    targetRoot);
+                targetPaths[i] = ParserLib.ReplaceNoCase(sourceFiles[i], srcRoot, targetRoot);
             }
 
             return targetPaths;

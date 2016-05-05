@@ -99,7 +99,7 @@ namespace LolBackup
         {
             if (_steerer == null)
             {
-                _steerer = new BackupSteerer(_jobs, StatusUpdate, ProgressBarUpdate, WriteToConsole);
+                _steerer = new BackupSteerer(_jobs, StatusUpdate, ProgressBarUpdate, WriteToConsole, ResetUI);
                 btnStart.Enabled = false;
                 btnStop.Enabled = true;
 
@@ -271,7 +271,6 @@ namespace LolBackup
         private void systemTrayContextMenuOpening(object sender, CancelEventArgs e)
         {
             restoreToolStripMenuItem.Enabled = this.WindowState != FormWindowState.Normal;
-
         }
 
         /// <summary>
@@ -299,18 +298,6 @@ namespace LolBackup
             _stateholder.Add("backupInterval", backupInterval.Value);
             _stateholder.Add("lastProcessTime", _lastProcessTime);
             _stateholder.Save();
-
-        }
-
-        /// <summary>
-        /// Writes a message to the console. This method is crossthread-friendly; it can be passed via a delegate 
-        /// to a background thread where it can be called directly.
-        /// </summary>
-        /// <param name="message"></param>
-        public void WriteToConsole(string message)
-        {
-            _messageToAdd = message;
-            console.Invoke(new UiInvoke(WriteToConsoleThreadSafe));
         }
 
         /// <summary>
@@ -321,34 +308,34 @@ namespace LolBackup
         public void StatusUpdate(string message)
         {
             _messageToAdd = message;
-            scanStatus.Invoke(new UiInvoke(StatusUpdateThreadSafe));
+            scanStatus.Invoke(new UiInvoke(StatusUpdateThreadUnsafe));
         }
 
         /// <summary>
-        /// Updates progress bar. This methos is crossthread-friendly.
+        /// Must be called from StatusUpdate().
         /// </summary>
-        /// <param name="progress"></param>
-        /// <param name="progressTotal"></param>
-        public void ProgressBarUpdate(int progress, int progressTotal)
-        {
-            _progress = progress;
-            _progressTotal = progressTotal;
-            backupProgressBar.Invoke(new UiInvoke(ProgressBarUpdateThreadSafe));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void StatusUpdateThreadSafe()
+        private void StatusUpdateThreadUnsafe()
         {
             scanStatus.Text = _messageToAdd;
+            backupProgressBar.Visible = true;
             backupProgressBar.Value = 0; // when status message is written, bar should be empty
+        }
+
+        /// <summary>
+        /// Writes a message to the console. This method is crossthread-friendly; it can be passed via a delegate 
+        /// to a background thread where it can be called directly.
+        /// </summary>
+        /// <param name="message"></param>
+        public void WriteToConsole(string message)
+        {
+            _messageToAdd = message;
+            console.Invoke(new UiInvoke(WriteToConsoleThreadUnsafe));
         }
 
         /// <summary>
         /// To be invoked by WriteToConsole in main app thread.
         /// </summary>
-        private void WriteToConsoleThreadSafe()
+        private void WriteToConsoleThreadUnsafe()
         {
             ListViewItem row = new ListViewItem(new[] { string.Format("{0}      {1}", DateTime.Now.ToShortTimeString(), _messageToAdd) });
             console.Items.Insert(0, row);
@@ -357,17 +344,47 @@ namespace LolBackup
         }
 
         /// <summary>
-        /// To be invoked by 
+        /// Updates progress bar. This method is crossthread-friendly.
         /// </summary>
-        private void ProgressBarUpdateThreadSafe()
+        /// <param name="progress"></param>
+        /// <param name="progressTotal"></param>
+        public void ProgressBarUpdate(int progress, int progressTotal)
+        {
+            _progress = progress;
+            _progressTotal = progressTotal;
+            backupProgressBar.Invoke(new UiInvoke(ProgressBarUpdateThreadUnsafe));
+        }
+
+        /// <summary>
+        /// To be invoked from ProgressBarUpdate(). This method is not crossthread-safe and must be invoked from a safe method.
+        /// </summary>
+        private void ProgressBarUpdateThreadUnsafe()
         {
             // prevent overflow
             if (_progress > _progressTotal)
                 _progress = _progressTotal;
 
+            backupProgressBar.Visible = true;
             backupProgressBar.Value = _progress;
             backupProgressBar.Maximum = _progressTotal;
-            scanStatus.Text = "Processing ..."; // when bar updates, status label must be blank
+            scanStatus.Text = "Processing ...";
+        }
+
+        /// <summary>
+        /// Call this to reset UI after backing up is done. Crossthread-safe.
+        /// </summary>
+        public void ResetUI()
+        {
+            backupProgressBar.Invoke(new UiInvoke(ResetUIThreadUnsafe));
+        }
+
+        /// <summary>
+        /// Must be called from ResetUI().
+        /// </summary>
+        private void ResetUIThreadUnsafe()
+        {
+            scanStatus.Text = string.Empty;
+            backupProgressBar.Visible = false;
         }
 
         /// <summary>
