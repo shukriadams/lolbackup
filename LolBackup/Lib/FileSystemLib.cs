@@ -10,9 +10,7 @@ using System;
 using System.IO;
 using System.Linq;
 using vcFramework.Parsers;
-using vcFramework.RandomItems;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace vcFramework.IO
 {
@@ -22,33 +20,6 @@ namespace vcFramework.IO
     public class FileSystemLib
     {
         #region METHODS
-
-        /// <summary>
-        /// Traverses a directory structure, looking for a directory of the given name (folder name, only full path)
-        /// </summary>
-        /// <param name="startDirectory"></param>
-        /// <param name="folder"></param>
-        /// <returns></returns>
-        public static string FindDirectory(string startDirectory, string folder)
-        {
-
-            while (true)
-            {
-                DirectoryInfo dir = new DirectoryInfo(startDirectory);
-                foreach (DirectoryInfo child in dir.GetDirectories())
-                {
-                    if (child.FullName.ToLower().EndsWith(Path.DirectorySeparatorChar + folder))
-                        return child.FullName;
-                }
-
-                if (dir.Parent == null)
-                    return null;
-
-                startDirectory = dir.Parent.FullName;
-            }
-
-        }
-
 
         /// <summary>
         /// Deletes everything in a folder
@@ -88,126 +59,6 @@ namespace vcFramework.IO
             return noErrors;
         }
 
-
-        /// <summary>
-        /// Moves a folder from one location to another, if the file and target directory are valid 
-        /// </summary>
-        static public bool MoveFile_AfterChecking(
-            string sourcePath,
-            string targetPath,
-            bool overwrite
-            )
-        {
-            //MOVES A FILE FROM ONE PLACE TO ANOTHER. IF THE TARGET DIRECTORY DOESNT EXIST THE FILE IS NOT MOVED
-            //RETURNS TRUE IF MOVED, RETURNS FALSE IF NOT
-
-            bool movedSuccesfully = false;
-
-            DirectoryInfo folderScan = new DirectoryInfo(targetPath);
-
-            // MOVES FILE
-            if (folderScan.Exists)
-            {
-                //MOVES THE FILE IN QUESTION TO THE UPLOADED FOLDER
-                FileInfo objMoveFile = new FileInfo(sourcePath);
-                if (objMoveFile.Exists)
-                {
-                    string strFileName = sourcePath.Substring(sourcePath.LastIndexOf("/") + 1, sourcePath.Length - sourcePath.LastIndexOf("/") - 1);
-
-
-
-                    //CHECKS IF A FILE OF THE SAME NAME ALREADY EXISTS IN TARGET PATH. DELETES IF blnOverWrite SET TO TRUE
-                    if (overwrite)
-                    {
-                        FileInfo objExistsTest = new FileInfo(targetPath + "/" + strFileName);
-                        if (objExistsTest.Exists)
-                        {
-                            objExistsTest.Delete();
-                        }
-                    }
-
-
-                    //DESTROYS AND RECREATES OBJECT TO MAKE SURE IT HAS THE _LATST_ POSSIBLE FILE SYSTEM INFO
-                    objMoveFile = new FileInfo(sourcePath);
-
-                    if (objMoveFile.Exists)
-                    {
-                        //DOES THE ACTUAL MOVE
-                        objMoveFile.MoveTo(targetPath + "/" + strFileName);
-                        movedSuccesfully = true;
-
-                    }
-
-
-
-
-
-                }
-            }
-
-            return movedSuccesfully;
-        }
-
-
-        /// <summary>
-        /// Deletes a file if it exists - else, ignores it
-        /// </summary>
-        static public void DeleteFile_AfterChecking(
-            string file
-            )
-        {
-            FileInfo checkFile = new FileInfo(file);
-
-            if (checkFile.Exists)
-                checkFile.Delete();
-
-        }
-
-
-        /// <summary> 
-        /// Returns true if a given string contains any characters which are invalid in a file name 
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        static public bool FilenameContainsInvalidCharacters(
-            string filename
-            )
-        {
-            char[] invalidChars = new char[9];
-            invalidChars[0] = '/';
-            invalidChars[1] = '\\';
-            invalidChars[2] = ':';
-            invalidChars[3] = '*';
-            invalidChars[4] = '?';
-            invalidChars[5] = '\"';
-            invalidChars[6] = '<';
-            invalidChars[7] = '>';
-            invalidChars[8] = '|';
-
-            return filename.IndexOfAny(invalidChars) != -1;
-        }
-
-
-        /// <summary> 
-        /// Removes all invalid characters from filename 
-        /// </summary>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        static public string RemoveInvalidCharactersFromFilename(
-            string filename
-            )
-        {
-            filename = filename.Replace("/", "");
-            filename = filename.Replace("\\", "");
-            filename = filename.Replace(":", "");
-            filename = filename.Replace("*", "");
-            filename = filename.Replace("?", "");
-            filename = filename.Replace("\"", "");
-            filename = filename.Replace("<", "");
-            filename = filename.Replace(">", "");
-            filename = filename.Replace("|", "");
-            return filename;
-        }
 
 
         /// <summary> 
@@ -300,109 +151,7 @@ namespace vcFramework.IO
         }
 
 
-        /// <summary> 
-        /// Generates a unique file name at the given
-        /// path location 
-        /// </summary>
-        /// <returns></returns>
-        public static string GenerateUniqueFileName(
-            string path,
-            int filenameLength
-            )
-        {
-            // Ensures that directory exists
-            if (!Directory.Exists(path))
-                throw new Exception("The folder " + path + " does not exist.");
 
-            // ensures that file name length is greater than 0
-            if (filenameLength < 1)
-                throw new Exception(filenameLength + " is an invalid file name length. Length must be at least 1.");
-
-
-            string filename = string.Empty;
-            while (true)
-            {
-                // gets a new file name
-                filename = RandomLib.RandomString(filenameLength);
-
-                // checks if file name already exists. if not, can exit loop
-                // and return file name
-                if (!File.Exists(path + "\\" + filename))
-                    break;
-            }
-
-            return filename;
-
-        }
-
-
-        /// <summary> </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static long GetDirectoryContentsSize(
-            string path
-            )
-        {
-
-            FileInfo[] files = null;
-            DirectoryInfo dirInfo = null;
-            long lngLogDirSize = 0;
-
-            dirInfo = new DirectoryInfo(path);
-
-            files = dirInfo.GetFiles();
-
-            foreach (FileInfo objFile in files)
-                lngLogDirSize += objFile.Length;
-
-            return lngLogDirSize;
-        }
-
-
-        /// <summary> 
-        /// Gets the total size of files directly in folder. 
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="searchPattern">For example, "*.zip"</param>
-        /// <returns></returns>
-        public static long GetDirectoryContentsSize(
-            string path,
-            string searchPattern
-            )
-        {
-            FileInfo[] files;
-            DirectoryInfo dirInfo = new DirectoryInfo(path);
-            long lngLogDirSize = 0;
-
-            files = dirInfo.GetFiles(searchPattern);
-
-            foreach (FileInfo objFile in files)
-                lngLogDirSize += objFile.Length;
-
-            return lngLogDirSize;
-        }
-
-
-        /// <summary> 
-        /// Returns true if the suspected child dir is nested under the suspected parent .
-        /// </summary>
-        /// <param name="suspectedParentDirectory"></param>
-        /// <param name="suspectChildDirectory"></param>
-        /// <returns></returns>
-        public static bool IsAChildOf(
-            string suspectedParentDirectory,
-            string suspectChildDirectory
-            )
-        {
-            bool isChild = false;
-
-            IsAChildOfInternal(
-                suspectedParentDirectory,
-                suspectChildDirectory,
-                ref isChild);
-
-            return isChild;
-        }
 
 
         /// <summary>
@@ -456,28 +205,6 @@ namespace vcFramework.IO
         }
 
 
-        /// <summary>
-        /// Returns true if the given path is writeable
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static bool IsWriteable(string path)
-        {
-            try
-            {
-                //Create the file.
-                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
-                {
-                    if (fs.CanWrite)
-                        return true;
-                    return false;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
 
 
         /// <summary>
@@ -559,11 +286,6 @@ namespace vcFramework.IO
         }
 
 
-        
-
-
-
-
 
         /// <summary>
         /// Maps an array of paths from one location to another.
@@ -604,30 +326,6 @@ namespace vcFramework.IO
 
         }
 
-
-        /// <summary>
-        /// Gets the "lowest" folder in path, eg, returns "world" from 
-        /// "d:\hello\there\world"
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static string GetRootPath(
-            string path
-            )
-        {
-            // remove trailing "\"
-            if (path.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                path = path.Substring(0, path.Length - 1);
-
-            // c:
-            if (ParserLib.StringCount(path, Path.DirectorySeparatorChar.ToString()) == 0)
-                return string.Empty;
-
-            // c:\1
-            return ParserLib.ReturnAfterLast(
-                path,
-                Path.DirectorySeparatorChar.ToString());
-        }
 
         #endregion
     }
