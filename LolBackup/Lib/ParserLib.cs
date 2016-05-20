@@ -702,6 +702,9 @@ namespace vcFramework.Parsers
                     }
 
                     //FIND POSITION IN STRING WHERE SUBSTR OCCURS
+                    if (intCurrentPosition + replaceWith.Length >= strStringTemp.Length)
+                        break;
+
                     intCurrentPosition = IndexOfFixed(strStringTemp, strSubStrTemp, intCurrentPosition + replaceWith.Length);
 
 
